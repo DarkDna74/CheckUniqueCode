@@ -38,6 +38,7 @@
                         messageEl.textContent = "Successo: Unique Code confermato.";
                     } else {
                         messageEl.textContent = "Errore: Contatta il supporto per sbloccare il problema.";
+                         localStorage.removeItem("duplicity");
                     }
                 } catch (error) {
                     messageEl.textContent = "Errore nella verifica del codice.";

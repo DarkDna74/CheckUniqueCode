@@ -34,7 +34,7 @@
                     });
                     const data = await res.json();
                      alert(uniqueCode+' '+data.unique_code);
-                    if (data.unique_code === uniqueCode) {
+                    if (data.unique_code == uniqueCode) {
                         messageEl.textContent = "Successo: Unique Code confermato.";
                     } else {
                         messageEl.textContent = "Errore: Contatta il supporto per sbloccare il problema.";

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verifica Unique Code</title>
+</head>
+<body>
+    <h1>Verifica Unique Code</h1>
+    <p id="message"></p>
+    <div id="input-section" style="display: none;">
+        <input type="email" id="email" placeholder="Inserisci email">
+        <input type="text" id="uniqueCode" placeholder="Unique Code (se disponibile)">
+        <button id="verify-btn">Verifica</button>
+    </div>
+    <script>
+        document.addEventListener("DOMContentLoaded", async function() {
+            const messageEl = document.getElementById("message");
+            const inputSection = document.getElementById("input-section");
+            const emailInput = document.getElementById("email");
+            const uniqueCodeInput = document.getElementById("uniqueCode");
+            const verifyBtn = document.getElementById("verify-btn");
+            
+            const storedData = localStorage.getItem("duplicity");
+            if (storedData) {
+                const { idUser, uniqueCode } = JSON.parse(storedData);
+                try {
+                    const res = await fetch("/api/check-unique-code", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ idUser })
+                    });
+                    const data = await res.json();
+                    if (data.unique_code === uniqueCode) {
+                        messageEl.textContent = "Successo: Unique Code confermato.";
+                    } else {
+                        messageEl.textContent = "Errore: Contatta il supporto per sbloccare il problema.";
+                    }
+                } catch (error) {
+                    messageEl.textContent = "Errore nella verifica del codice.";
+                }
+            } else {
+                inputSection.style.display = "block";
+                verifyBtn.addEventListener("click", async function() {
+                    const email = emailInput.value;
+                    const uniqueCode = uniqueCodeInput.value;
+                    if (!email) {
+                        messageEl.textContent = "Inserisci un'email valida.";
+                        return;
+                    }
+                    try {
+                        const res = await fetch("/api/get-user-id", {
+                            method: "POST",
+                            headers: { "Content-Type": "application/json" },
+                            body: JSON.stringify({ email })
+                        });
+                        const data = await res.json();
+                        if (!data.user_id) {
+                            messageEl.textContent = "Utente non autorizzato.";
+                            return;
+                        }
+                        const trickRes = await fetch("/api/get-unique-code", {
+                            method: "POST",
+                            headers: { "Content-Type": "application/json" },
+                            body: JSON.stringify({ user_id: data.user_id, uniqueCode })
+                        });
+                        const trickData = await trickRes.json();
+                        if (!trickData.unique_code) {
+                            messageEl.textContent = "Errore: nessun codice valido trovato.";
+                            return;
+                        }
+                        localStorage.setItem("duplicity", JSON.stringify({ idUser: data.user_id, uniqueCode: trickData.unique_code }));
+                        messageEl.textContent = "Nuovo Unique Code assegnato: " + trickData.unique_code;
+                    } catch (error) {
+                        messageEl.textContent = "Errore nella registrazione del codice.";
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>

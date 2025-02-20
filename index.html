@@ -33,6 +33,7 @@
                         body: JSON.stringify({ idUser })
                     });
                     const data = await res.json();
+                     alert(uniqueCode+' '+data.unique_code);
                     if (data.unique_code === uniqueCode) {
                         messageEl.textContent = "Successo: Unique Code confermato.";
                     } else {

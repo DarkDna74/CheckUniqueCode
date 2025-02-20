@@ -11,7 +11,7 @@ export default async function handler(req, res) {
     const { data, error } = await supabase
         .from('"User"')
         .select('user_id')
-        .eq('email', email)
+        .eq('mail', email)
         .single();
 
     if (error || !data) return res.status(404).json({ error: 'Utente non autorizzato' });

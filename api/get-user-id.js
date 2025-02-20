@@ -9,7 +9,7 @@ export default async function handler(req, res) {
     if (!email) return res.status(400).json({ error: 'Email richiesta' });
 
     const { data, error } = await supabase
-        .from('User')
+        .from('"User"')
         .select('user_id')
         .eq('email', email)
         .single();

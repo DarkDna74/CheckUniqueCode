@@ -1,0 +1,306 @@
+ 
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <script src="https://cdn.jsdelivr.net/npm/crypto-js@4.1.1/crypto-js.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chose & Show</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            //font-weight: bold;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+           background: radial-gradient(circle, black 0%, white 400%);
+///background: black;
+color:lime ;
+            flex-direction: column;
+        }
+
+        .container {
+           // flex: 1;
+            display: block;
+            //flex-direction: column;
+            text-align: center;
+            font-size: 30px;
+            margin-top: 50vh;            
+z-index:1;
+        }
+
+        .section {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            border-bottom: 2px solid lime;
+            margin: 0;
+            padding: 0;
+        }
+
+        .grid {
+            display: none;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 5px;
+        //    margin-top: 10px;
+background: radial-gradient(circle, lime 0%, black 120%);
+        }
+
+        .grid button {
+            padding: 10px;
+            font-size: 16px;
+        }
+
+        .buttons, .result, .grid-numbers {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+       //    margin-top: 10px;
+//background: radial-gradient(circle, lime 0%, black 100%);
+        }
+
+        .result {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            flex: 1;
+            width: 100%;
+        }
+
+        .result-table {
+            border-collapse: collapse;
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            border: 1px;
+//background: radial-gradient(circle, black 0%, lime 400%);
+        }
+
+        .result-table td {
+            border: 0px solid black;
+            text-align: center;
+            font-size: 120px;
+            width: 50%;
+            height: 100%;
+            vertical-align: middle;
+            padding: 1px;
+        }
+
+   /*     td, th {
+            width: 50%;
+            height: 100%;
+            padding: 0;
+            font-size: 100px;
+            border: 2px;
+        }
+*/
+
+#numeri {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            opacity: 0.2;
+            font-size: 16px;
+            line-height: 1.4;
+            z-index: -1;
+        }
+
+
+
+
+
+/* Stile per la tabella delle carte */
+/* Stile per la tabella delle carte */
+/* Stile per la tabella delle carte */
+.card-table-container {
+    height: 100vh; /* Imposta l'altezza massima desiderata */
+   overflow-y: auto;  /* Aggiungi una barra di scorrimento verticale */
+   display: flex;
+  width: 100vw;
+}
+
+.card-table {
+    width: 100%;
+    height: 50%;
+    border-collapse: collapse;
+    margin: 0px 0;
+    font-size: 18px;
+    text-align: center;
+    table-layout: fixed; /* Aggiungi questa proprietà */
+    //background: radial-gradient(circle, black 0%, lime 200%);
+    //table-layout: flex;
+}
+/*
+.card-table th, .card-table td {
+    border: 1px solid #ddd;
+    padding: 0px;
+  //  width: 25%; 
+    vertical-align: middle; 
+    text-align: center; 
+   // display: flex; 
+   //height: 10px;
+    
+}*/
+
+.card-table tr:nth-child(even) {
+  //  background-color: #f2f2f2;
+}
+
+.card-table tr:hover {
+ //   background-color: #ddd;
+}
+
+.card-table th {
+    padding-top: 0px;
+    padding-bottom: 0px;
+    background-color: #4CAF50;
+    color: white;
+}
+
+.card-table button {
+    background-color: #4CAF50;
+    background: radial-gradient(circle, lime 0%, black 100%);
+    color: black;
+    border: none;
+    border-radius: 40px;
+    width: 50px;
+    height: 50px;
+    //padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 15px;
+    //font-weight: bold;
+    //margin: 4px 2px;
+    transition-duration: 0.4s;
+    cursor: pointer;
+    position: relative;  /* Aggiungi questa proprietà */
+    top: 50%;            /* Aggiungi questa proprietà */
+ //   transform: translateY(-50%); /* Aggiungi questa proprietà */
+}
+
+.card-table button:hover {
+    background-color: white;
+    color: black;
+    border: 2px solid #4CAF50;
+}
+
+/*---------------------------- NUMBER TABLE */
+
+
+.number-table-container {
+    height: 100vh; /* Imposta l'altezza massima desiderata */
+   overflow-y: auto;  /* Aggiungi una barra di scorrimento verticale */
+   display: flex;
+  width: 100vw;
+}
+
+.number-table {
+    width: 100%;
+    height: 50%;
+    border-collapse: collapse;
+    margin: 0px 0;
+    font-size: 18px;
+    text-align: center;
+    table-layout: fixed; /* Aggiungi questa proprietà */
+    //background: radial-gradient(circle, black 0%, lime 200%);
+    //table-layout: flex;
+}
+/*
+.number-table th, .number-table td {
+    border: 1px solid #ddd;
+    padding: 0px;
+  //  width: 25%; 
+    vertical-align: middle; 
+    text-align: center; 
+   // display: flex; 
+   //height: 10px;
+    
+}*/
+
+.number-table tr:nth-child(even) {
+  //  background-color: #f2f2f2;
+}
+
+.number-table tr:hover {
+ //   background-color: #ddd;
+}
+
+.number-table th {
+    padding-top: 0px;
+    padding-bottom: 0px;
+    background-color: #4CAF50;
+    color: white;
+}
+
+.number-table button {
+    background-color: #4CAF50;
+    background: radial-gradient(circle, white 0%, black 100%);
+    border-radius: 40px;
+    color: black;
+    border: none;
+    width: 50px;
+    height: 50px;
+    //padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 18px;
+    font-weight: bold;
+    //margin: 4px 2px;
+    transition-duration: 0.4s;
+    cursor: pointer;
+    position: relative;  /* Aggiungi questa proprietà */
+    top: 50%;            /* Aggiungi questa proprietà */
+    //transform: translateY(-50%); /* Aggiungi questa proprietà */
+}
+
+.number-table button:hover {
+    background-color: white;
+    color: black;
+    border: 2px solid #4CAF50;
+}
+
+    </style>
+</head>
+<body>
+     <div id="numeri"></div>
+    <div  class="container">
+        "SESSION EXPIRED"
+    </div>
+ 
+<script>
+
+                function generaNumeri(lunghezza) {
+                    let numeri = "";
+                    for (let i = 0; i < lunghezza; i++) {
+                        numeri += Math.floor(Math.random() * 10);
+                    }
+                    return numeri;
+                }
+                
+                function riempiPagina() {
+                    let lunghezza = 5000; // Numero arbitrario per coprire lo sfondo
+                    stringaNumeri = generaNumeri(lunghezza);
+                    document.getElementById("numeri").textContent = stringaNumeri;
+                }
+
+                window.onload = () => {
+                    riempiPagina();
+                    //creaTabella();
+                };
+
+
+    </script>
+</body>
+</html>

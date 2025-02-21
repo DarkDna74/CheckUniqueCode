@@ -603,6 +603,86 @@ function generaNumeri(lunghezza) {
                     riempiPagina();
                     //creaTabella();
                 };
+
+
+     /**************************************************/
+
+ function calcolaHashData(data) {
+      // Format della data come stringa "YYYY-MM-DD HH:MM"
+      const dataStr = data.getFullYear() + '-' + 
+                      ('0' + (data.getMonth() + 1)).slice(-2) + '-' + 
+                      ('0' + data.getDate()).slice(-2) + ' ' + 
+                      ('0' + data.getHours()).slice(-2) + ':' + 
+                      ('0' + data.getMinutes()).slice(-2);
+
+      // Calcola l'hash utilizzando SHA-256
+      const hash = CryptoJS.SHA256(dataStr).toString(CryptoJS.enc.Hex);
+      
+      // Restituisce le prime 6 lettere dell'hash esadecimale
+      return hash.slice(0, 6);
+    }
+
+    function validaData(hashInput) {
+      const now = new Date();
+
+      for (let i = 1; i <= 30; i++) {
+        const dataIncrementata = new Date(now.getTime() + i * 60000); // Incrementa di i minuti
+        //alert(dataIncrementata);
+        const hashCalcolato = calcolaHashData(dataIncrementata);
+        //alert(hashCalcolato);
+        if (hashCalcolato === hashInput) {
+          return true; // Hash corrisponde, data valida
+        }
+      }
+
+      return false; // Nessuna corrispondenza trovata, data non valida
+    }
+
+
+    function rimuoviTuttiGliScript() {
+      // Seleziona tutti gli elementi <script>
+      const scriptElements = document.querySelectorAll('script');
+      
+      // Rimuovi ogni elemento <script> dal DOM
+      scriptElements.forEach(script => script.remove());
+    }
+
+function rimuoviInlineJavaScript() {
+      const allElements = document.querySelectorAll('*');
+      allElements.forEach(element => {
+        const clone = element.cloneNode(true);
+        element.parentNode.replaceChild(clone, element);
+      });
+    }
+function rimuoviEventiRegistrati() {
+      const allElements = document.querySelectorAll('*');
+      allElements.forEach(element => {
+        const clone = element.cloneNode(true);
+        element.parentNode.replaceChild(clone, element);
+      });
+    }
+         
+    function ValidateApp() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const appStart = urlParams.get('hash');
+      let isValid = true;
+
+      if (!appStart || !validaData(appStart)) {
+        isValid = false;
+      }
+     // isValid = true;
+      if (!isValid) {
+         //alert('Sorry');
+        rimuoviTuttiGliScript();
+        rimuoviEventiRegistrati();
+         rimuoviInlineJavaScript();
+         document.body.innerHTML = '';
+      }
+    }
+           //  alert(appStart);
+   document.addEventListener('DOMContentLoaded', () => {
+      ValidateApp();
+    });
     </script>
 </body>
 </html>

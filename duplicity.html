@@ -684,6 +684,7 @@ function rimuoviEventiRegistrati() {
    document.addEventListener('DOMContentLoaded', () => {
       ValidateApp();
       rimuoviTuttiGliScript();
+    alert(document.referrer);
       if (document.referrer !== "https://check-unique-code.vercel.app/index.html") {
                 // Chiude la pagina se non è stata raggiunta da index.html
                 window.location.href = "https://check-unique-code.vercel.app";

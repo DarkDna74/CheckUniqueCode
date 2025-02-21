@@ -75,7 +75,7 @@
             const storedData = localStorage.getItem("duplicity");
             if (storedData) {
                 //document.getElementById('input-section').style.display='block';
-                //const { idUser, uniqueCode } = JSON.parse(storedData);
+                const { idUser, uniqueCode } = JSON.parse(storedData);
                 //alert(idUser+" "+uniqueCode);
                 try {
                     const res = await fetch("/api/check-unique-code", {
@@ -98,7 +98,7 @@
                          //input-section
                     }
                 } catch (error) {
-                    messageEl.textContent = "Errore nella verifica del codice.";
+                    messageEl.textContent = "Error in code verification";
                 }
             } else {
                 inputSection.style.display = "block";

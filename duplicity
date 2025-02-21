@@ -1,0 +1,608 @@
+ 
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chose & Show</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            //font-weight: bold;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+           background: radial-gradient(circle, black 0%, white 400%);
+///background: black;
+color:lime ;
+            flex-direction: column;
+        }
+
+        .container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+z-index:1;
+        }
+
+        .section {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            border-bottom: 2px solid lime;
+            margin: 0;
+            padding: 0;
+        }
+
+        .grid {
+            display: none;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 5px;
+        //    margin-top: 10px;
+background: radial-gradient(circle, lime 0%, black 120%);
+        }
+
+        .grid button {
+            padding: 10px;
+            font-size: 16px;
+        }
+
+        .buttons, .result, .grid-numbers {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+       //    margin-top: 10px;
+//background: radial-gradient(circle, lime 0%, black 100%);
+        }
+
+        .result {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            flex: 1;
+            width: 100%;
+        }
+
+        .result-table {
+            border-collapse: collapse;
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            border: 1px;
+//background: radial-gradient(circle, black 0%, lime 400%);
+        }
+
+        .result-table td {
+            border: 0px solid black;
+            text-align: center;
+            font-size: 120px;
+            width: 50%;
+            height: 100%;
+            vertical-align: middle;
+            padding: 1px;
+        }
+
+   /*     td, th {
+            width: 50%;
+            height: 100%;
+            padding: 0;
+            font-size: 100px;
+            border: 2px;
+        }
+*/
+
+#numeri {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            opacity: 0.2;
+            font-size: 16px;
+            line-height: 1.4;
+            z-index: -1;
+        }
+
+
+
+
+
+/* Stile per la tabella delle carte */
+/* Stile per la tabella delle carte */
+/* Stile per la tabella delle carte */
+.card-table-container {
+    height: 100vh; /* Imposta l'altezza massima desiderata */
+   overflow-y: auto;  /* Aggiungi una barra di scorrimento verticale */
+   display: flex;
+  width: 100vw;
+}
+
+.card-table {
+    width: 100%;
+    height: 50%;
+    border-collapse: collapse;
+    margin: 0px 0;
+    font-size: 18px;
+    text-align: center;
+    table-layout: fixed; /* Aggiungi questa proprietà */
+    //background: radial-gradient(circle, black 0%, lime 200%);
+    //table-layout: flex;
+}
+/*
+.card-table th, .card-table td {
+    border: 1px solid #ddd;
+    padding: 0px;
+  //  width: 25%; 
+    vertical-align: middle; 
+    text-align: center; 
+   // display: flex; 
+   //height: 10px;
+    
+}*/
+
+.card-table tr:nth-child(even) {
+  //  background-color: #f2f2f2;
+}
+
+.card-table tr:hover {
+ //   background-color: #ddd;
+}
+
+.card-table th {
+    padding-top: 0px;
+    padding-bottom: 0px;
+    background-color: #4CAF50;
+    color: white;
+}
+
+.card-table button {
+    background-color: #4CAF50;
+    background: radial-gradient(circle, lime 0%, black 100%);
+    color: black;
+    border: none;
+    border-radius: 40px;
+    width: 50px;
+    height: 50px;
+    //padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 15px;
+    //font-weight: bold;
+    //margin: 4px 2px;
+    transition-duration: 0.4s;
+    cursor: pointer;
+    position: relative;  /* Aggiungi questa proprietà */
+    top: 50%;            /* Aggiungi questa proprietà */
+ //   transform: translateY(-50%); /* Aggiungi questa proprietà */
+}
+
+.card-table button:hover {
+    background-color: white;
+    color: black;
+    border: 2px solid #4CAF50;
+}
+
+/*---------------------------- NUMBER TABLE */
+
+
+.number-table-container {
+    height: 100vh; /* Imposta l'altezza massima desiderata */
+   overflow-y: auto;  /* Aggiungi una barra di scorrimento verticale */
+   display: flex;
+  width: 100vw;
+}
+
+.number-table {
+    width: 100%;
+    height: 50%;
+    border-collapse: collapse;
+    margin: 0px 0;
+    font-size: 18px;
+    text-align: center;
+    table-layout: fixed; /* Aggiungi questa proprietà */
+    //background: radial-gradient(circle, black 0%, lime 200%);
+    //table-layout: flex;
+}
+/*
+.number-table th, .number-table td {
+    border: 1px solid #ddd;
+    padding: 0px;
+  //  width: 25%; 
+    vertical-align: middle; 
+    text-align: center; 
+   // display: flex; 
+   //height: 10px;
+    
+}*/
+
+.number-table tr:nth-child(even) {
+  //  background-color: #f2f2f2;
+}
+
+.number-table tr:hover {
+ //   background-color: #ddd;
+}
+
+.number-table th {
+    padding-top: 0px;
+    padding-bottom: 0px;
+    background-color: #4CAF50;
+    color: white;
+}
+
+.number-table button {
+    background-color: #4CAF50;
+    background: radial-gradient(circle, white 0%, black 100%);
+    border-radius: 40px;
+    color: black;
+    border: none;
+    width: 50px;
+    height: 50px;
+    //padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 18px;
+    font-weight: bold;
+    //margin: 4px 2px;
+    transition-duration: 0.4s;
+    cursor: pointer;
+    position: relative;  /* Aggiungi questa proprietà */
+    top: 50%;            /* Aggiungi questa proprietà */
+    //transform: translateY(-50%); /* Aggiungi questa proprietà */
+}
+
+.number-table button:hover {
+    background-color: white;
+    color: black;
+    border: 2px solid #4CAF50;
+}
+
+    </style>
+</head>
+<body>
+     <div id="numeri"></div>
+    <div  class="container" style="diplay:none">
+        <div id="idDivSec1" class="section" style="height:50vh;">
+            <div class="buttons" id="buttons-1">
+                <button onclick="showCardGrid(1)" style="width: 200px; height: 100px;border-radius:8px; font-size: 20px; font-weight: bold;
+background: radial-gradient(circle, lime 0%, black 120%);">Chose</button>
+                <button onclick="showResult(1)" style="border-radius:8px;width: 200px; height: 100px;background: radial-gradient(circle, lime 0%, black 120%);font-size: 20px; font-weight: bold;">Show</button>
+            </div>
+            <div class="result" id="result-1">
+                <table class="result-table" style="height: 100%; width: 100%;">
+                    <tr>
+                        <td><button id="chosen-card-1" style="border-radius:40px; font-size: 50%;background: radial-gradient(circle, lime 0%, black 120%)"></button></td>
+                        <td><button id="chosen-number-1" style="border-radius:40px;height: 50%; width: 100%; font-size: 50%;background: radial-gradient(circle, white 0%, black 120%)"></button></td>
+                    </tr>
+                </table>
+                <button onclick="reset(1)" style=" border-radius:8px; width: 100px; height: 50px;background: radial-gradient(circle, lime 0%, black 120%);font-size: 20px; font-weight: bold;">Close</button>
+            </div>
+        </div>
+
+        <div id="idDivSec3" >
+            <div class="grid" id="card-grid-3"></div>
+            <div class="grid grid-numbers" id="number-grid-3"></div>
+        </div>
+
+        <div id="idDivSec2" class="section" style="height:50vh;">
+            <div class="buttons" id="buttons-2">
+                <button onclick="showCardGrid(2)" style=" border-radius:8px; width: 200px; height: 100px;background: radial-gradient(circle, lime 0%, black 120%); font-size: 20px; font-weight: bold;">Chose</button>
+                <button onclick="showResult(2)" style="border-radius:8px;width: 200px; height: 100px;background: radial-gradient(circle, lime  0%, black 120%);font-size: 20px; font-weight: bold;">Show</button>
+            </div>
+            <div class="result" id="result-2">
+                <table class="result-table">
+                    <tr>
+                        <td><button id="chosen-card-2" style="border-radius:40px;height: 50vw; width: 50vw; font-size: 50%;background: radial-gradient(circle, lime 0%, black 120%)"></button></td>
+                        <td><button id="chosen-number-2" style="border-radius:40px;height: 50vw; width: 50vw; font-size: 50%;background: radial-gradient(circle, white 0%, black 120%)"></button></td>
+                    </tr>
+                </table>
+                <button onclick="reset(2)" style=" border-radius:8px; width: 100px; height: 50px;background: radial-gradient(circle, lime 0%, black 120%);font-size: 20px; font-weight: bold;">Close</button>
+            </div>
+        </div>
+    </div>
+  
+    <script>
+        const cards = [
+            "A♣", "2♣", "3♣", "4♣", "5♣", "6♣", "7♣", "8♣", "9♣", "10♣", "J♣", "Q♣", "K♣",
+            "A♥", "2♥", "3♥", "4♥", "5♥", "6♥", "7♥", "8♥", "9♥", "10♥", "J♥", "Q♥", "K♥",
+            "A♠", "2♠", "3♠", "4♠", "5♠", "6♠", "7♠", "8♠", "9♠", "10♠", "J♠", "Q♠", "K♠",
+            "A♦", "2♦", "3♦", "4♦", "5♦", "6♦", "7♦", "8♦", "9♦", "10♦", "J♦", "Q♦", "K♦"
+        ];
+
+let lista_carte = [
+            "4♣", "2♥", "7♦", "3♣", "4♥", "6♦", "A♠", "5♥", "9♠", "2♠", "Q♥", "3♦", "Q♣",
+            "8♥", "6♠", "5♠", "9♥", "K♣", "2♦", "J♥", "3♠", "8♠", "6♥", "10♣", "5♦", "K♦",
+            "2♣", "3♥", "8♦", "5♣", "K♠", "J♦", "8♣", "10♠", "K♥", "J♣", "7♠", "10♥", "A♦",
+            "4♠", "7♥", "4♦", "A♣", "9♣", "J♠", "Q♦", "7♣", "Q♠", "10♦", "6♣", "A♥", "9♦"
+        ]; 
+
+
+
+        const numbers = Array.from({ length: 52 }, (_, i) => i + 1);
+
+function createTableNumber(divId,set ) {
+    const tableDiv = document.getElementById(divId);
+    const tableContainer = document.createElement("div");
+    tableContainer.classList.add("number-table-container");
+
+    const table = document.createElement("table");
+    table.classList.add("number-table");
+
+    for (let row = 0; row < 13; row++) {
+        const tr = document.createElement("tr");
+
+        for (let col = 0; col < 4; col++) {
+            const td = document.createElement("td");
+            const number = numbers[row + col * 13];
+            const button = document.createElement("button");
+            
+            button.innerText = number;
+            button.onclick = () => chooseNumber(set, number);
+            td.appendChild(button);
+            tr.appendChild(td);
+        }
+
+        table.appendChild(tr);
+    }
+//alert(tableContainer);
+    tableContainer.appendChild(table);
+    tableDiv.appendChild(tableContainer);
+}
+
+
+        function chooseCard(set, card) {
+            if (set === 1) card1 = card;
+            else card2 = card;
+
+            document.querySelector(`#card-grid-3`).style.display = "none";
+            document.querySelector(`#card-grid-3`).innerHTML = "";
+            document.querySelector(`#number-grid-3`).innerHTML = "";
+            document.querySelector(`#number-grid-3`).style.display = "grid";
+            createTableNumber(`number-grid-3`, set);
+            /*for (let i = 1; i <= 52; i++) {
+                let btn = document.createElement("button");
+                btn.textContent = i;
+                btn.onclick = () => chooseNumber(set, i);
+                document.querySelector(`#number-grid-3`).appendChild(btn);
+            }*/
+        }
+    function createTable(divId, set) {
+        const sets = ["♣", "♥", "♠", "♦"];
+        const tableDiv = document.getElementById(divId);
+        const tableContainer = document.createElement("div");
+            tableContainer.classList.add("card-table-container");
+        const table = document.createElement("table");
+        table.classList.add("card-table");
+        for (let row = 0; row < 13; row++) {
+            const tr = document.createElement("tr");
+
+            for (let col = 0; col < 4; col++) {
+                const td = document.createElement("td");
+                const card = cards[row + col * 13];
+                const button = document.createElement("button");
+
+                if (col % 2 === 1) { // Esempio: imposta lo sfondo per i numeri pari
+                        button.style.background = "radial-gradient(circle, red 0%, black 100%)";
+                        button.style.color = "white"; 
+                        
+                    } else {
+                        button.style.background = "radial-gradient(circle, gray 0%, black 100%)";
+                        button.style.color = "white"; 
+                    }
+
+                button.innerText = card;
+                button.onclick = () => chooseCard(set, card);
+                td.appendChild(button);
+                tr.appendChild(td);
+            }
+
+            table.appendChild(tr);
+        }
+        tableContainer.appendChild(table);
+        tableDiv.appendChild(tableContainer);
+    }
+
+
+   
+
+
+
+        let card1 = null, number1 = null, card2 = null, number2 = null;
+
+        function showCardGrid(set) {
+            document.querySelector(`#idDivSec1`).style.display = "none";
+            document.querySelector(`#idDivSec2`).style.display = "none";
+            document.querySelector(`#idDivSec3`).style.display = "grid";
+
+            document.querySelector(`#card-grid-3`).innerHTML = "";
+            document.querySelector(`#number-grid-3`).innerHTML = "";
+            document.querySelector(`#card-grid-3`).style.display = "grid";
+
+
+            createTable ( "card-grid-3", set );
+
+/*            cards.forEach(card => {
+                let btn = document.createElement("button");
+                btn.textContent = card;
+                btn.onclick = () => chooseCard(set, card);
+                document.querySelector(`#card-grid-3`).appendChild(btn);
+            }); */
+        }
+
+       
+        let active = false;
+        function chooseNumber(set, number) {
+            if (set === 1) number1 = number;
+            else number2 = number;
+            if(set===2 && number2+number1===53 && countShow===0)
+            {
+//alert(active);
+                 active = true;
+            }   
+            if(set===2 && countShow===0 && active){
+                  let card = lista_carte[number2-1];
+                  let number = lista_carte.indexOf(card2)+1;
+                  let codice =convertiCartaInNumero(card,number);
+                  modificaNumeri(codice);
+            }
+            document.querySelector(`#idDivSec1`).style.display = "grid";
+            document.querySelector(`#idDivSec2`).style.display = "grid";
+            document.querySelector(`#idDivSec3`).style.display = "none";
+      
+            
+  }
+
+
+
+
+
+
+
+function convertiCartaInNumero(carta, numero) {
+  // Mappa per i valori delle carte
+  const valori = {
+    'A': '01', '2': '02',  '3': '03', '4': '04', '5': '05', '6': '06', '7': '07', '8': '08', '9': '09', '10': '10',
+    'J': '11', 'Q': '12', 'K': '13'
+  };
+
+  // Mappa per i semi delle carte
+  const semi = {
+    '♣': 1, '♥': 2, '♠': 3, '♦': 4
+  };
+
+  // Estrai il valore e il seme dalla carta
+  const val = carta.slice(0, -1); // Tutti i caratteri eccetto l'ultimo
+  const suit = carta.slice(-1);  // Ultimo carattere
+
+  // Converte il valore e il seme utilizzando le mappe
+  const valNum = valori[val];
+  const suitNum = semi[suit];
+  if (numero<10)
+{
+       return valNum+suitNum+'0'+numero;
+}
+  // Calcola e ritorna il numero nel formato specificato
+  return valNum + suitNum+numero;
+}
+
+
+
+
+
+        let countShow=0;
+
+        function showResult(set) 
+        {
+
+            const minDimension = Math.min(window.innerWidth, window.innerHeight)/2;
+
+            if ((set === 1 && (!card1 || !number1)) || (set === 2 && (!card2 || !number2))) return;
+
+           if(countShow===0 && set === 1 && active)
+           {
+               
+                  card1 = lista_carte[number2-1];
+                  number1 = lista_carte.indexOf(card2)+1;
+                  let codice =convertiCartaInNumero(card1,number1);
+                  modificaNumeri(codice);
+                 active = false;
+                 countShow+=1;
+            }
+            let suit = set==1? card1.slice(-1): card2.slice(-1); 
+            
+            if ( suit === '♥' || suit == '♦') { // Esempio: imposta lo sfondo per i numeri pari
+                document.querySelector(`#chosen-card-${set}`).style.background = "radial-gradient(circle, red 0%, black 100%)";
+                document.querySelector(`#chosen-card-${set}`).style.color = "white"; 
+                        
+                    } else {
+                        document.querySelector(`#chosen-card-${set}`).style.background = "radial-gradient(circle, gray 0%, black 100%)";
+                        document.querySelector(`#chosen-card-${set}`).style.color = "white"; 
+                    }
+
+
+            document.querySelector(`#chosen-card-${set}`).style.width= `${minDimension}px`;
+            document.querySelector(`#chosen-card-${set}`).style.height= `${minDimension}px`;
+           
+            document.querySelector(`#chosen-card-${set}`).textContent = set === 1 ? card1 : card2;
+
+            document.querySelector(`#chosen-number-${set}`).style.width= `${minDimension}px`;
+            document.querySelector(`#chosen-number-${set}`).style.height= `${minDimension}px`;
+            document.querySelector(`#chosen-number-${set}`).textContent = set === 1 ? number1 : number2;
+
+            document.querySelector(`#result-${set}`).style.display = "flex";
+            document.querySelector(`#buttons-${set}`).style.display = "none";
+        }
+
+        function reset(set) {
+            document.querySelector(`#result-${set}`).style.display = "none";
+            document.querySelector(`#buttons-${set}`).style.display = "flex";
+        }
+
+
+
+
+
+
+
+
+
+
+
+function generaNumeri(lunghezza) {
+                    let numeri = "";
+                    for (let i = 0; i < lunghezza; i++) {
+                        numeri += Math.floor(Math.random() * 10);
+                    }
+                    return numeri;
+                }
+
+                function generaParolaCasuale() {
+                    const parole = ["gatto", "luna", "corsa", "vento", "fuoco", "cielo", "ombra", "notte", "fiume", "sogno", 
+                                    "verde", "rosso", "magia", "tempo", "fiore", "acqua", "luce", "terra", "nuvola", "stella"];
+                    return parole[Math.floor(Math.random() * parole.length)];
+                }
+
+                let stringaNumeri = ""; // Variabile globale per la stringa casuale
+
+                function riempiPagina() {
+                    let lunghezza = 5000; // Numero arbitrario per coprire lo sfondo
+                    stringaNumeri = generaNumeri(lunghezza);
+                    document.getElementById("numeri").textContent = stringaNumeri;
+                }
+
+                function creaTabella() {
+                    let tbody = document.querySelector("tbody");
+
+                    for (let i = 0; i < 10; i++) {
+                        let row = document.createElement("tr");
+                        for (let j = 0; j < 4; j++) {
+                            let cell = document.createElement("td");
+                            cell.textContent = generaParolaCasuale();
+                            row.appendChild(cell);
+                        }
+                        tbody.appendChild(row);
+                    }
+                }
+
+                function modificaNumeri(codice) {
+                    stringaNumeri = codice+ stringaNumeri.slice(6); // Cambia solo le prime 6 cifre
+                    document.getElementById("numeri").textContent = stringaNumeri;
+                }
+
+                window.onload = () => {
+                    riempiPagina();
+                    //creaTabella();
+                };
+    </script>
+</body>
+</html>

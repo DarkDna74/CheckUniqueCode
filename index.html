@@ -4,7 +4,7 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Ultimate ACAAN</title>
+  <title>Duplicity</title>
   <script src="https://cdn.jsdelivr.net/npm/crypto-js@4.1.1/crypto-js.js"></script>
   <style>
   body {
@@ -180,13 +180,50 @@
       const hash = calcolaHashData(dataIncrementata);
       let link = `duplicity.html?hash=${hash}`;
       
-      if ( stack==='1')
-      {
-        link = `https://beta-ultimate.vercel.app?S=1&hash=${hash}`;
-      }
+      
+        const cuffietteCheckbox = document.querySelector('input[name="cuffiette"]');
+        if (cuffietteCheckbox.checked)
+        {    
+            const englishButton = document.querySelector('input[name="language"][value="English"]');
+            if ( englishButton.checked)
+            {
+                link = `duplicity.html?S=1&hash=${hash}&size=1&lan=1`;
+            }   
+            else 
+            { 
+                link = `duplicity.html?S=1&hash=${hash}&size=1`;
+            }
+        }
+      alert(link);
       window.location.href = link;
     }
 
+
+
+
+    document.addEventListener("DOMContentLoaded", function() {
+            // Funzione per aggiornare la selezione della lingua
+            function updateLanguageSelection() {
+                const language = localStorage.getItem('language');
+                if (language) {
+                    document.querySelector(`input[name="language"][value="${language}"]`).checked = true;
+                }
+            }
+
+            // Funzione per aggiornare il localStorage con la selezione della lingua
+            function saveLanguageSelection(event) {
+                localStorage.setItem('language', event.target.value);
+            }
+
+            // Aggiungi event listener ai radio button della lingua
+            const languageButtons = document.querySelectorAll('input[name="language"]');
+            languageButtons.forEach(button => {
+                button.addEventListener('change', saveLanguageSelection);
+            });
+
+            // Aggiorna la selezione della lingua al caricamento della pagina
+            updateLanguageSelection();
+        });
 
   </script>
 
@@ -204,8 +241,21 @@
   </div>
   <div id="idMain" class="container" style="display: none">
    
-    <button onclick="generaLink('0')">Mnemonica</button>
-    <button onclick="generaLink('1')">Aronson</button>
-  </div>
+    <button onclick="generaLink('0')">Start</button>
+   
+    <div>
+    <h2 style="color: white;">Voice Settings</h2>
+        <label style='color:white;' >
+            <input type="radio" name="language" value="Italiano"> Italiano
+        </label>
+        <label style='color:white;'>
+            <input type="radio" name="language" value="English"> Inglese
+        </label>
+        <h2 style="color: white;">Bluetooth headphones</h2>
+        <label style='color:white;'>
+            <input type="checkbox" name="cuffiette"> Yes
+        </label>
+    </div>
+</div>
 </body>
 </html>

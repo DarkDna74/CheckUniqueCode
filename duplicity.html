@@ -678,6 +678,7 @@ function rimuoviEventiRegistrati() {
         rimuoviEventiRegistrati();
          rimuoviInlineJavaScript();
          document.body.innerHTML = '';
+         window.location.href = "https://check-unique-code.vercel.app";
       }
     }
            //  alert(appStart);
@@ -687,7 +688,7 @@ function rimuoviEventiRegistrati() {
    // alert(document.referrer);
       if (document.referrer !== "https://check-unique-code.vercel.app/") {
                 // Chiude la pagina se non è stata raggiunta da index.html
-                window.location.href = "https://check-unique-code.vercel.app";
+                window.location.href = "https://check-unique-code.vercel.app/error.html";
                 //window.close();
       }
    });

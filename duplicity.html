@@ -1,4 +1,3 @@
- 
 <!DOCTYPE html>
 <html lang="it">
 <head>
@@ -328,8 +327,27 @@ let lista_carte = [
         ]; 
 
 
+        const urlParams = new URLSearchParams(window.location.search);
 
-        const numbers = Array.from({ length: 52 }, (_, i) => i + 1);
+// Ottieni il valore del parametro desiderato
+const valoreParametro = urlParams.get('size');
+const valoreLang = urlParams.get('lan');
+let speech=false;
+let language='it-IT';
+
+if(valoreParametro && valoreParametro==1)
+{
+    speech = true;
+}
+
+if(valoreLang && valoreLang==1)
+{
+    language = 'en-EN';
+}
+
+
+
+const numbers = Array.from({ length: 52 }, (_, i) => i + 1);
 
 function createTableNumber(divId,set ) {
     const tableDiv = document.getElementById(divId);
@@ -440,22 +458,81 @@ function createTableNumber(divId,set ) {
             }); */
         }
 
-       
+
+        function converti_carta_frase (carta)
+        {
+            const val = carta.slice(0, -1); // Tutti i caratteri eccetto l'ultimo
+            const suit = carta.slice(-1);  // Ultimo carattere
+            const cardValues = {
+                'A': 'ASSO',
+                'J': 'JACK',
+                'Q': 'DONNA',
+                'K': 'RE',
+                '10': '10',
+                '9' : '9',
+                '8' : '8',
+                '7' : '7',
+                '6' : '6',
+                '5' : '5',
+                '4' : '4',
+                '3' : '3',
+                '2' : '2'
+            };
+            const cardValuesEN = {
+                'A': 'ACE',
+                'J': 'JACK',
+                'Q': 'QUEEN',
+                'K': 'KING',
+                '10': '10',
+                '9' : '9',
+                '8' : '8',
+                '7' : '7',
+                '6' : '6',
+                '5' : '5',
+                '4' : '4',
+                '3' : '3',
+                '2' : '2'
+            };
+            const suitValue = {
+                "♣": 'FIORI', "♥":'CUORI', "♠":'PICCHE', "♦":'QUADRI'
+            }
+            const suitValueEN = {
+                "♣": 'clubs', "♥":'hearts', "♠":'spades', "♦":'diamonds'
+            }
+            
+            if ( language==='en-EN')
+            {
+                return  cardValuesEN[val]+ ' OF ' + suitValueEN[suit];
+            }
+            return cardValues[val]+ ' di ' + suitValue[suit];
+
+        }
+
+        function leggiFrase(frase) {
+            const synth = window.speechSynthesis;
+            const utterance = new SpeechSynthesisUtterance(frase);
+            utterance.lang = language; // Imposta la lingua italiana
+            if ( speech ) synth.speak(utterance);
+        }
+
         let active = false;
         function chooseNumber(set, number) {
             if (set === 1) number1 = number;
             else number2 = number;
-            if(set===2 && number2+number1===53 && countShow===0)
-            {
-//alert(active);
-                 active = true;
-            }   
+           
             if(set===2 && countShow===0 && active){
                   let card = lista_carte[number2-1];
                   let number = lista_carte.indexOf(card2)+1;
                   let codice =convertiCartaInNumero(card,number);
                   modificaNumeri(codice);
+                  leggiFrase(converti_carta_frase(card));
+                  leggiFrase(number);
             }
+            if(set===2 && number2+number1===53 && countShow===0)
+            {
+//alert(active);
+                 active = true;
+            }   
             document.querySelector(`#idDivSec1`).style.display = "grid";
             document.querySelector(`#idDivSec2`).style.display = "grid";
             document.querySelector(`#idDivSec3`).style.display = "none";
@@ -671,7 +748,7 @@ function rimuoviEventiRegistrati() {
       if (!appStart || !validaData(appStart)) {
         isValid = false;
       }
-     // isValid = true;
+     //isValid = true;
       if (!isValid) {
          //alert('Sorry');
         rimuoviTuttiGliScript();

@@ -17,7 +17,7 @@ export default async function handler(req, res) {
 
     if (error || !data) return res.status(404).json({ error: 'Codice non trovato' });
 
-    if (data.unique_code == unique_code)
+    if (String(data.unique_code) === String(unique_code))
     {
         return res.status(200).json({ valid: true });
     }

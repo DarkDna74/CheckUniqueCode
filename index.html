@@ -152,6 +152,7 @@
                         validation = true;
                         messageEl.textContent = "New Unique Code assigned. Copy it and keep it safe!";
                         document.getElementById('idUnique').textContent = '[UC:' + unique_code + ']';
+                        uniqueCodeInput.value = unique_code;
                         verifyBtn.textContent = "Close";
                     } catch (error) {
                         messageEl.textContent = "Error in code registration";

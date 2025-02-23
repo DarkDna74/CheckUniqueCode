@@ -5,7 +5,7 @@ const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_KEY
 export default async function handler(req, res) {
     if (req.method !== 'POST') return res.status(405).json({ error: 'Metodo non consentito' });
 
-    /*const { user_id, uniqueCode } = req.body;*/
+    const { user_id, uniqueCode } = req.body;
     if (!user_id) return res.status(400).json({ error: 'User ID richiesto' });
 
     const { data, error } = await supabase

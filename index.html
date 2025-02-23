@@ -1,77 +1,82 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Duplicity</title>
-  <script src="https://cdn.jsdelivr.net/npm/crypto-js@4.1.1/crypto-js.js"></script>
-  <style>
-  body {
-         font-family: Arial, sans-serif;
-         text-align: center;
-         background-color: black;
-         background: radial-gradient(circle, black 0%, white 400%);
-         color: black;
-         }.container {
-         max-width: 340px; /* Larghezza fissa per adattare le 4 colonne */
-         margin: 0 auto;
-         flex-wrap: nowrap; /* Evita che vadano sotto */
-         }
-         .bold-number {
-         font-weight: bold;
-         }
-         h1 {
-         border-bottom: 2px solid gray;
-         padding: 10px;;
-         font-size:28px;
-         background: radial-gradient(circle, white 0%, black 150%);
-         }
-         .container {
-    display: flex;
-    flex-direction: column; /* Mette i bottoni in colonna */
-    justify-content: center; /* Centra verticalmente */
-    justify-content: flex-start; /* Spinge i bottoni verso l'alto */
-    align-items: top; /* Centra orizzontalmente */
-    height: 100vh; /* Occupa tutta l'altezza dello schermo */
-    gap:50px;
-    padding-top:100px;
-  }
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Duplicity</title>
+    <script src="https://cdn.jsdelivr.net/npm/crypto-js@4.1.1/crypto-js.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: black;
+            background: radial-gradient(circle, black 0%, white 400%);
+            color: black;
+        }
 
-  .container button {
-    width: 300px;
-    height: 70px;
-    padding: 10px 12px;
-    font-size: 16px;
-    font-weight: bold;
-    border: none;
-    background-color: #333;
-    background: radial-gradient(circle, white 0%, black 150%);
-    color: black;
-    border-radius: 5px;
-    cursor: pointer;
-    margin: 10px 0; /* Spazio tra i bottoni */
-  }
+        .container {
+            max-width: 340px; /* Larghezza fissa per adattare le 4 colonne */
+            margin: 0 auto;
+            flex-wrap: nowrap; /* Evita che vadano sotto */
+        }
 
-  .container button:hover {
-    background-color: #555;
-  }
+        .bold-number {
+            font-weight: bold;
+        }
 
-  </style>
-  <script>
-     let unique_code ="";
-     let validation = false;
-     /*********************************************************************/
-     /*********************************************************************/
+        h1 {
+            border-bottom: 2px solid gray;
+            padding: 10px;
+            ;
+            font-size: 28px;
+            background: radial-gradient(circle, white 0%, black 150%);
+        }
 
-     /*********************************************************************/
-     document.addEventListener("DOMContentLoaded", async function() {
+        .container {
+            display: flex;
+            flex-direction: column; /* Mette i bottoni in colonna */
+            justify-content: center; /* Centra verticalmente */
+            justify-content: flex-start; /* Spinge i bottoni verso l'alto */
+            align-items: top; /* Centra orizzontalmente */
+            height: 100vh; /* Occupa tutta l'altezza dello schermo */
+            gap: 50px;
+            padding-top: 100px;
+        }
+
+            .container button {
+                width: 300px;
+                height: 70px;
+                padding: 10px 12px;
+                font-size: 16px;
+                font-weight: bold;
+                border: none;
+                background-color: #333;
+                background: radial-gradient(circle, white 0%, black 150%);
+                color: black;
+                border-radius: 5px;
+                cursor: pointer;
+                margin: 10px 0; /* Spazio tra i bottoni */
+            }
+
+                .container button:hover {
+                    background-color: #555;
+                }
+    </style>
+    <script>
+        let unique_code = "";
+        let validation = false;
+        /*********************************************************************/
+        /*********************************************************************/
+
+        /*********************************************************************/
+        document.addEventListener("DOMContentLoaded", async function () {
             const messageEl = document.getElementById("message");
             const inputSection = document.getElementById("input-section");
             const emailInput = document.getElementById("email");
             const uniqueCodeInput = document.getElementById("uniqueCode");
             const verifyBtn = document.getElementById("verify-btn");
-            
+
             const storedData = localStorage.getItem("duplicity");
             if (storedData) {
                 //document.getElementById('input-section').style.display='block';
@@ -81,38 +86,37 @@
                     const res = await fetch("/api/check-unique-code", {
                         method: "POST",
                         headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify({ idUser })
+                        body: JSON.stringify({ idUser, uniqueCode })
                     });
                     const data = await res.json();
                     // alert(uniqueCode+' '+data.unique_code);
-                    if (data.unique_code == uniqueCode) {
-                      //alert(uniqueCode)
-                      unique_code = uniqueCode;
-                      document.getElementById('idUnique').textContent ='[UC:'+ unique_code+']';
-                      document.getElementById('idMain').style.display='block';
-                     // messageEl.textContent = "Successo: Unique Code confermato.";
+                    if (data.valid) {
+                        //alert(uniqueCode)
+                        unique_code = uniqueCode;
+                        document.getElementById('idUnique').textContent = '[UC:' + unique_code + ']';
+                        document.getElementById('idMain').style.display = 'block';
+                        // messageEl.textContent = "Successo: Unique Code confermato.";
                     } else {
                         messageEl.textContent = "Error: Contact support with your registration email to resolve the issue.";
-                         localStorage.removeItem("duplicity");
-                         document.getElementById('input-section').style.display = 'block';
-                         //input-section
+                        localStorage.removeItem("duplicity");
+                        document.getElementById('input-section').style.display = 'block';
+                        //input-section
                     }
                 } catch (error) {
                     messageEl.textContent = "Error in code verification";
                 }
             } else {
                 inputSection.style.display = "block";
-                verifyBtn.addEventListener("click", async function() {
+                verifyBtn.addEventListener("click", async function () {
                     const email = emailInput.value;
                     const uniqueCode = uniqueCodeInput.value;
-                    
-                    if ( validation )
-                    {
-                        document.getElementById('input-section').style.display='none';
-                        document.getElementById('idMain').style.display='block';
-                        
+
+                    if (validation) {
+                        document.getElementById('input-section').style.display = 'none';
+                        document.getElementById('idMain').style.display = 'block';
+
                     }
-                    
+
                     if (!email) {
                         messageEl.textContent = "Insert a valid mail.";
                         return;
@@ -142,8 +146,8 @@
                         unique_code = trickData.unique_code;
                         validation = true;
                         messageEl.textContent = "New Unique Code assigned. Copy it and keep it safe!";
-                        document.getElementById('idUnique').textContent ='[UC:'+ unique_code+']';
-                        verifyBtn.textContent="Close";
+                        document.getElementById('idUnique').textContent = '[UC:' + unique_code + ']';
+                        verifyBtn.textContent = "Close";
                     } catch (error) {
                         messageEl.textContent = "Error in code registration";
                     }
@@ -153,55 +157,52 @@
 
 
 
-     /*********************************************************************/
-     /*********************************************************************/
+        /*********************************************************************/
+        /*********************************************************************/
 
 
 
 
-    function calcolaHashData(data) {
-      // Format della data come stringa "YYYY-MM-DD HH:MM"
-      const dataStr = data.getFullYear() + '-' + 
-                      ('0' + (data.getMonth() + 1)).slice(-2) + '-' + 
-                      ('0' + data.getDate()).slice(-2) + ' ' + 
-                      ('0' + data.getHours()).slice(-2) + ':' + 
-                      ('0' + data.getMinutes()).slice(-2);
+        function calcolaHashData(data) {
+            // Format della data come stringa "YYYY-MM-DD HH:MM"
+            const dataStr = data.getFullYear() + '-' +
+                ('0' + (data.getMonth() + 1)).slice(-2) + '-' +
+                ('0' + data.getDate()).slice(-2) + ' ' +
+                ('0' + data.getHours()).slice(-2) + ':' +
+                ('0' + data.getMinutes()).slice(-2);
 
-      // Calcola l'hash utilizzando SHA-256
-      const hash = CryptoJS.SHA256(dataStr).toString(CryptoJS.enc.Hex);
-      
-      // Restituisce le prime 6 lettere dell'hash esadecimale
-      return hash.slice(0, 6);
-    }
+            // Calcola l'hash utilizzando SHA-256
+            const hash = CryptoJS.SHA256(dataStr).toString(CryptoJS.enc.Hex);
 
-    function generaLink(stack) {
-      const now = new Date();
-      const dataIncrementata = new Date(now.getTime() + 29 * 60000); // Incrementa di 10 minuti
-      const hash = calcolaHashData(dataIncrementata);
-      let link = `duplicity.html?hash=${hash}`;
-      
-      
-        const cuffietteCheckbox = document.querySelector('input[name="cuffiette"]');
-        if (cuffietteCheckbox.checked)
-        {    
-            const englishButton = document.querySelector('input[name="language"][value="English"]');
-            if ( englishButton.checked)
-            {
-                link = `duplicity.html?S=1&hash=${hash}&size=1&lan=1`;
-            }   
-            else 
-            { 
-                link = `duplicity.html?S=1&hash=${hash}&size=1`;
-            }
+            // Restituisce le prime 6 lettere dell'hash esadecimale
+            return hash.slice(0, 6);
         }
-     // alert(link);
-      window.location.href = link;
-    }
+
+        function generaLink(stack) {
+            const now = new Date();
+            const dataIncrementata = new Date(now.getTime() + 29 * 60000); // Incrementa di 10 minuti
+            const hash = calcolaHashData(dataIncrementata);
+            let link = `duplicity.html?hash=${hash}`;
+
+
+            const cuffietteCheckbox = document.querySelector('input[name="cuffiette"]');
+            if (cuffietteCheckbox.checked) {
+                const englishButton = document.querySelector('input[name="language"][value="English"]');
+                if (englishButton.checked) {
+                    link = `duplicity.html?S=1&hash=${hash}&size=1&lan=1`;
+                }
+                else {
+                    link = `duplicity.html?S=1&hash=${hash}&size=1`;
+                }
+            }
+            // alert(link);
+            window.location.href = link;
+        }
 
 
 
 
-    document.addEventListener("DOMContentLoaded", function() {
+        document.addEventListener("DOMContentLoaded", function () {
             // Funzione per aggiornare la selezione della lingua
             function updateLanguageSelection() {
                 const language = localStorage.getItem('language');
@@ -225,37 +226,37 @@
             updateLanguageSelection();
         });
 
-  </script>
+    </script>
 
-  
+
 </head>
 <body>
-  <h1>Duplicity</h1>
-  <p id="idUnique" style="color: Gray; font-weight: bold; ">[UC: ]</p>
-  <div id="input-section" class="container" style="display: none;">
-    <p id="message" style="color: white; font-weight: bold;">Validate your effect</p>
-    <input type="email" id="email" style="width: 300px; height: 40px;padding: 4px 4px; " placeholder="Insert your mail">
-        <input type="text" id="uniqueCode" 
-        style="width: 300px; height: 40px;padding: 4px 4px;margin-top: 10px;" placeholder="Unique Code (if available)">
+    <h1>Duplicity</h1>
+    <p id="idUnique" style="color: Gray; font-weight: bold; ">[UC: ]</p>
+    <div id="input-section" class="container" style="display: none;">
+        <p id="message" style="color: white; font-weight: bold;">Validate your effect</p>
+        <input type="email" id="email" style="width: 300px; height: 40px;padding: 4px 4px; " placeholder="Insert your mail">
+        <input type="text" id="uniqueCode"
+               style="width: 300px; height: 40px;padding: 4px 4px;margin-top: 10px;" placeholder="Unique Code (if available)">
         <button id="verify-btn">Verifica</button>
-  </div>
-  <div id="idMain" class="container" style="display: none">
-   
-    <button onclick="generaLink('0')">Start</button>
-   
-    <div>
-    <h2 style="color: white;">Voice Settings</h2>
-        <label style='color:white;' >
-            <input type="radio" name="language" value="Italiano"> Italiano
-        </label>
-        <label style='color:white;'>
-            <input type="radio" name="language" value="English"> Inglese
-        </label>
-        <h2 style="color: white;">Bluetooth headphones</h2>
-        <label style='color:white;'>
-            <input type="checkbox" name="cuffiette"> Yes
-        </label>
     </div>
-</div>
+    <div id="idMain" class="container" style="display: none">
+
+        <button onclick="generaLink('0')">Start</button>
+
+        <div>
+            <h2 style="color: white;">Voice Settings</h2>
+            <label style='color:white;'>
+                <input type="radio" name="language" value="Italiano"> Italiano
+            </label>
+            <label style='color:white;'>
+                <input type="radio" name="language" value="English"> English
+            </label>
+            <h2 style="color: white;">Bluetooth headphones</h2>
+            <label style='color:white;'>
+                <input type="checkbox" name="cuffiette"> Yes
+            </label>
+        </div>
+    </div>
 </body>
 </html>

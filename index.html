@@ -77,7 +77,7 @@
             const uniqueCodeInput = document.getElementById("uniqueCode");
             const verifyBtn = document.getElementById("verify-btn");
 
-            const storedData = localStorage.getItem("duplicity");
+            let storedData = localStorage.getItem("duplicity");
            // alert(storeedData);
             if (storedData) {
                 //document.getElementById('input-section').style.display='block';
@@ -143,8 +143,10 @@
                             messageEl.textContent = "Error: No valid code found.";
                             return;
                         }
-                        alert(data.user_id+" "+trickData.unique_code );
                         localStorage.setItem("duplicity", JSON.stringify({ idUser: data.user_id, uniqueCode: trickData.unique_code }));
+                        storedData = localStorage.getItem("duplicity");
+                        alert(storedData);
+                        
                         unique_code = trickData.unique_code;
                         validation = true;
                         messageEl.textContent = "New Unique Code assigned. Copy it and keep it safe!";

@@ -143,6 +143,7 @@
                             messageEl.textContent = "Error: No valid code found.";
                             return;
                         }
+                        alert(data.user_id+" "+trickData.unique_code );
                         localStorage.setItem("duplicity", JSON.stringify({ idUser: data.user_id, uniqueCode: trickData.unique_code }));
                         unique_code = trickData.unique_code;
                         validation = true;

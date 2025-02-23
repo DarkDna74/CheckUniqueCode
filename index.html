@@ -178,7 +178,7 @@
             return data.hash;
         }
 
-        function generaLink(stack) {   
+        async function generaLink(stack) {   
             const hash = await calcolaHash();
             let link = `duplicity.html?hash=${hash}`;
 

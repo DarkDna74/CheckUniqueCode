@@ -82,7 +82,7 @@
             if (storedData) {
                 //document.getElementById('input-section').style.display='block';
                 const { idUser, uniqueCode } = JSON.parse(storedData);
-                alert(idUser+" "+uniqueCode);
+                //alert(idUser+" "+uniqueCode);
                 try {
                     const res = await fetch("/api/check-unique-code", {
                         method: "POST",
@@ -91,7 +91,7 @@
                     });
                     const data = await res.json();
                     // alert(uniqueCode+' '+data.unique_code);
-                    alert(data.valid);
+                    //alert(data.valid);
                     if (data.valid) {
                         //alert(uniqueCode)
                         unique_code = uniqueCode;
@@ -146,7 +146,7 @@
                         }
                         localStorage.setItem("duplicity", JSON.stringify({ idUser: data.user_id, uniqueCode: trickData.unique_code }));
                         storedData = localStorage.getItem("duplicity");
-                        alert(storedData);
+                      //  alert(storedData);
                         
                         unique_code = trickData.unique_code;
                         validation = true;

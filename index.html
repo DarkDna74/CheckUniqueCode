@@ -97,7 +97,7 @@
                         unique_code = uniqueCode;
                         document.getElementById('idUnique').textContent = '[UC:' + unique_code + ']';
                         document.getElementById('idMain').style.display = 'block';
-                        // messageEl.textContent = "Successo: Unique Code confermato.";
+                        return;// messageEl.textContent = "Successo: Unique Code confermato.";
                     } else {
                         messageEl.textContent = "Error: Contact support with your registration email to resolve the issue.";
                         localStorage.removeItem("duplicity");
@@ -107,7 +107,7 @@
                 } catch (error) {
                     messageEl.textContent = "Error in code verification";
                 }
-            } else {
+            } 
                 inputSection.style.display = "block";
                 verifyBtn.addEventListener("click", async function () {
                     const email = emailInput.value;
@@ -157,7 +157,7 @@
                         messageEl.textContent = "Error in code registration";
                     }
                 });
-            }
+            
         });
 
 

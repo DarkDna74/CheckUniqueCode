@@ -82,7 +82,7 @@
             if (storedData) {
                 //document.getElementById('input-section').style.display='block';
                 const { idUser, uniqueCode } = JSON.parse(storedData);
-                //alert(idUser+" "+uniqueCode);
+                alert(idUser+" "+uniqueCode);
                 try {
                     const res = await fetch("/api/check-unique-code", {
                         method: "POST",

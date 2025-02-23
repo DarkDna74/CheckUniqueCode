@@ -168,27 +168,19 @@
 
 
 
-        function calcolaHashData(data) {
-            // Format della data come stringa "YYYY-MM-DD HH:MM"
-            const dataStr = data.getFullYear() + '-' +
-                ('0' + (data.getMonth() + 1)).slice(-2) + '-' +
-                ('0' + data.getDate()).slice(-2) + ' ' +
-                ('0' + data.getHours()).slice(-2) + ':' +
-                ('0' + data.getMinutes()).slice(-2);
-
-            // Calcola l'hash utilizzando SHA-256
-            const hash = CryptoJS.SHA256(dataStr).toString(CryptoJS.enc.Hex);
-
-            // Restituisce le prime 6 lettere dell'hash esadecimale
-            return hash.slice(0, 6);
+        async function calcolaHash() {
+            const res = await fetch("/api/get-hash", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ method: "get_hash", param: "" })
+            });
+            const data = await res.json();
+            return data.hash;
         }
 
-        function generaLink(stack) {
-            const now = new Date();
-            const dataIncrementata = new Date(now.getTime() + 29 * 60000); // Incrementa di 10 minuti
-            const hash = calcolaHashData(dataIncrementata);
+        function generaLink(stack) {   
+            const hash = await calcolaHash();
             let link = `duplicity.html?hash=${hash}`;
-
 
             const cuffietteCheckbox = document.querySelector('input[name="cuffiette"]');
             if (cuffietteCheckbox.checked) {

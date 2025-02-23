@@ -697,7 +697,7 @@ background: radial-gradient(circle, lime 0%, black 120%);">
             });
         }
 
-        function ValidateApp() {
+        async function ValidateApp() {
             const urlParams = new URLSearchParams(window.location.search);
             const appStart = urlParams.get('hash');
             let isValid = true;

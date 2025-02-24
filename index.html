@@ -4,7 +4,7 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Duplicity</title>
+    <title>Card and Number Statistics</title>
     <script src="https://cdn.jsdelivr.net/npm/crypto-js@4.1.1/crypto-js.js"></script>
     <style>
         body {
@@ -13,6 +13,21 @@
             background-color: black;
             background: radial-gradient(circle, black 0%, white 400%);
             color: black;
+        }
+
+        .poll {
+            display: flex;
+            text-align: center;
+            justify-content: center;
+            flex-direction:row;
+            flex-wrap: wrap;
+            margin-top: 40vh 0;
+            gap: 30vh;
+        }
+        .table_poll {
+         
+           
+            margin-top: 40vh 0;
         }
 
         .container {
@@ -28,233 +43,360 @@
         h1 {
             border-bottom: 2px solid gray;
             padding: 10px;
-            ;
+            
             font-size: 28px;
             background: radial-gradient(circle, white 0%, black 150%);
         }
 
-        .container {
-            display: flex;
-            flex-direction: column; /* Mette i bottoni in colonna */
-            justify-content: center; /* Centra verticalmente */
-            justify-content: flex-start; /* Spinge i bottoni verso l'alto */
-            align-items: top; /* Centra orizzontalmente */
-            height: 100vh; /* Occupa tutta l'altezza dello schermo */
-            gap: 50px;
-            padding-top: 100px;
+        h3 {
+            background: radial-gradient(circle, white 0%, black 120%);
+            font-size: 15px;
         }
 
-            .container button {
-                width: 300px;
-                height: 70px;
-                padding: 10px 12px;
-                font-size: 16px;
+        .container, .menu {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .column {
+            padding: 10px;
+            width: 50px;
+        }
+
+            .column h3 {
+                margin: 0 0 10px 0;
+            }
+
+        .poll_button {
+            width: 150px;
+            height: 50px;
+            margin-top: 40vh 0;
+            font-size: 16px;
+            cursor: pointer;
+            background: radial-gradient(circle, white 0%, black 200%);
+            background-color: black;
+            color: black;
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+        }
+
+        
+
+
+        button {
+            width: 50px;
+            height: 50px;
+            margin: 5px 0;
+            font-size: 16px;
+            cursor: pointer;
+            background: radial-gradient(circle, white 0%, black 200%);
+            background-color: black;
+            color: black;
+            border: none;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+
+
+            button:hover {
+                background-color: gray;
+            }
+
+
+
+
+        .black_card_button {
+            width: 40px;
+            height: 40px;
+            margin: 5px 0;
+            font-size: 15px;
+            cursor: pointer;
+            background: radial-gradient(circle, gray 0%, black 100%);
+            background-color: black;
+            color: white;
+            border: none;
+            border-radius: 40px;
+            font-weight: normal;
+        }
+
+        .red_card_button {
+            width: 40px;
+            height: 40px;
+            margin: 5px 0;
+            font-size: 15px;
+            cursor: pointer;
+            background: radial-gradient(circle, red 0%, black 100%);
+            background-color: black;
+            color: white;
+            border: none;
+            border-radius: 40px;
+            font-weight: normal;
+        }
+
+
+        
+        .menu {
+            flex-direction: column;
+            align-items: center;
+            margin-top: 50px;
+            display: none;
+        }
+
+            .menu button {
                 font-weight: bold;
-                border: none;
-                background-color: #333;
+                background: black;
+                background-color: black;
                 background: radial-gradient(circle, white 0%, black 150%);
                 color: black;
-                border-radius: 5px;
-                cursor: pointer;
-                margin: 10px 0; /* Spazio tra i bottoni */
+                width: 250px; /* Imposta una larghezza più grande */
+                height: 50px; /* Regola l'altezza se necessario */
+                font-size: 18px; /* Ingrandisce il testo */
+                border-bottom: 2px solid gray;
+                margin: 20px;
             }
 
-                .container button:hover {
-                    background-color: #555;
-                }
+            .menu h2 {
+                border-bottom: 2px solid white;
+                padding-bottom: 5px;
+            }
+
+        #topTable {
+            width: 100%;
+            border-collapse: collapse;
+            // color: white;
+        }
+
+            #topTable th, {
+                border: 1px solid white;
+                padding: 8px;
+                text-align: center;
+                color: black;
+                //background: radial-gradient(circle, white 0%, black 100%);
+            }
+
+            #topTable td {
+                border: 1px solid white;
+                padding: 8px;
+                text-align: center;
+                color: white;
+                //background: radial-gradient(circle, white 0%, black 100%);
+            }
+
+            #topTable th {
+                background: radial-gradient(circle, white 0%, black 150%);
+                background-color: #444;
+            }
     </style>
     <script>
-        let unique_code = "";
-        let validation = false;
-        /*********************************************************************/
-        /*********************************************************************/
 
-        /*********************************************************************/
-        document.addEventListener("DOMContentLoaded", async function () {
-            const messageEl = document.getElementById("message");
-            const inputSection = document.getElementById("input-section");
-            const emailInput = document.getElementById("email");
-            const uniqueCodeInput = document.getElementById("uniqueCode");
-            const verifyBtn = document.getElementById("verify-btn");
+        async function loadScript() {
+            const params = new URLSearchParams(window.location.search);
+            const param = params.get('hash');
 
-            let storedData = localStorage.getItem("duplicity");
-           // alert(storeedData);
-            if (storedData) {
-                //document.getElementById('input-section').style.display='block';
-                const { idUser, uniqueCode } = JSON.parse(storedData);
-                //alert(idUser+" "+uniqueCode);
-                try {
-                    const res = await fetch("/api/check-unique-code", {
-                        method: "POST",
-                        headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify({ idUser, uniqueCode })
-                    });
-                    const data = await res.json();
-                    // alert(uniqueCode+' '+data.unique_code);
-                    //alert(data.valid);
-                    if (data.valid) {
-                        //alert(uniqueCode)
-                        unique_code = uniqueCode;
-                        document.getElementById('idUnique').textContent = '[UC:' + unique_code + ']';
-                        document.getElementById('idMain').style.display = 'block';
-                        return;// messageEl.textContent = "Successo: Unique Code confermato.";
-                    } else {
-                        messageEl.textContent = "Error: Contact support with your registration email to resolve the issue.";
-                        localStorage.removeItem("duplicity");
-                        document.getElementById('input-section').style.display = 'block';
-                        //input-section
-                    }
-                } catch (error) {
-                    messageEl.textContent = "Error in code verification";
-                }
-            } 
-                inputSection.style.display = "block";
-                verifyBtn.addEventListener("click", async function () {
-                    const email = emailInput.value;
-                    const uniqueCode = uniqueCodeInput.value;
+            const response = await fetch(`/api/get_script?param=${param}`);
+            const scriptContent = await response.text();
 
-                    if (validation) {
-                        document.getElementById('input-section').style.display = 'none';
-                        document.getElementById('idMain').style.display = 'block';
-
-                    }
-
-                    if (!email) {
-                        messageEl.textContent = "Insert a valid mail.";
-                        return;
-                    }
-                    try {
-                        const res = await fetch("/api/get-user-id", {
-                            method: "POST",
-                            headers: { "Content-Type": "application/json" },
-                            body: JSON.stringify({ email })
-                        });
-                        const data = await res.json();
-                        if (!data.user_id) {
-                            messageEl.textContent = "Unauthorized user!";
-                            return;
-                        }
-                        const trickRes = await fetch("/api/get-unique-code", {
-                            method: "POST",
-                            headers: { "Content-Type": "application/json" },
-                            body: JSON.stringify({ user_id: data.user_id, uniqueCode })
-                        });
-                        const trickData = await trickRes.json();
-                        if (!trickData.unique_code) {
-                            messageEl.textContent = "Error: No valid code found.";
-                            return;
-                        }
-                        localStorage.setItem("duplicity", JSON.stringify({ idUser: data.user_id, uniqueCode: trickData.unique_code }));
-                        storedData = localStorage.getItem("duplicity");
-                      //  alert(storedData);
-                        
-                        unique_code = trickData.unique_code;
-                        validation = true;
-                        messageEl.textContent = "New Unique Code assigned. Copy it and keep it safe!";
-                        document.getElementById('idUnique').textContent = '[UC:' + unique_code + ']';
-                        uniqueCodeInput.value = unique_code;
-                        verifyBtn.textContent = "Close";
-                    } catch (error) {
-                        messageEl.textContent = "Error in code registration";
-                    }
-                });
-            
-        });
-
-
-
-        /*********************************************************************/
-        /*********************************************************************/
-
-
-
-
-        async function calcolaHash() {
-            const res = await fetch("/api/get-hash", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ method: "get_hash", param: "" })
-            });
-            const data = await res.json();
-            return data.hash;
+            const script = document.createElement('script');
+            script.text = scriptContent;
+            document.head.appendChild(script);
         }
 
-        async function generaLink(stack) {   
-            const hash = await calcolaHash();
-            let link = `duplicity.html?hash=${hash}`;
-
-            const cuffietteCheckbox = document.querySelector('input[name="cuffiette"]');
-            if (cuffietteCheckbox.checked) {
-                const englishButton = document.querySelector('input[name="language"][value="English"]');
-                if (englishButton.checked) {
-                    link = `duplicity.html?S=1&hash=${hash}&size=1&lan=1`;
-                }
-                else {
-                    link = `duplicity.html?S=1&hash=${hash}&size=1`;
-                }
-            }
-            // alert(link);
-            window.location.href = link;
-        }
-
-
-
-
-        document.addEventListener("DOMContentLoaded", function () {
-            // Funzione per aggiornare la selezione della lingua
-            function updateLanguageSelection() {
-                const language = localStorage.getItem('language');
-                if (language) {
-                    document.querySelector(`input[name="language"][value="${language}"]`).checked = true;
-                }
-            }
-
-            // Funzione per aggiornare il localStorage con la selezione della lingua
-            function saveLanguageSelection(event) {
-                localStorage.setItem('language', event.target.value);
-            }
-
-            // Aggiungi event listener ai radio button della lingua
-            const languageButtons = document.querySelectorAll('input[name="language"]');
-            languageButtons.forEach(button => {
-                button.addEventListener('change', saveLanguageSelection);
-            });
-
-            // Aggiorna la selezione della lingua al caricamento della pagina
-            updateLanguageSelection();
-        });
+        window.onload = loadScript;
 
     </script>
-
-
 </head>
+
 <body>
-    <h1>Duplicity</h1>
-    <p id="idUnique" style="color: Gray; font-weight: bold; ">[UC: ]</p>
-    <div id="input-section" class="container" style="display: none;">
-        <p id="message" style="color: white; font-weight: bold;">Validate your effect</p>
-        <input type="email" id="email" style="width: 300px; height: 40px;padding: 4px 4px; " placeholder="Insert your mail">
-        <input type="text" id="uniqueCode"
-               style="width: 300px; height: 40px;padding: 4px 4px;margin-top: 10px;" placeholder="Unique Code (if available)">
-        <button id="verify-btn">Verify</button>
+    <h1 id="Title" style="display:none;">Card and  Number</h1>
+    
+    <div id="idThankYou" class="poll" style="text-align:center; display: none">
+        <div style="margin-top:400px 0;"></div>
+        <table class="table_poll" style="width:100%;">
+            <tr>
+                <td>
+                   <hr />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <p><label style="color:white;">THANK YOU</label></p>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <hr />
+                </td>
+            </tr>
+        </table>
+
     </div>
-    <div id="idMain" class="container" style="display: none">
+    <div id="idPool" class="poll" style="text-align:center;">
+        <div style="margin-top:400px 0;"></div>
 
-        <button onclick="generaLink('0')">Start</button>
+        <table class="table_poll">
+            <tr>
+                <td>
+                    <hr />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <p><label style="color:white;">Think of any playing card and any number between 1 and 52!</label></p>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <p><label style="color:white;">When you are ready, press start poll.</label></p>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <hr />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <button class="poll_button" onclick="start_pool()">Start Poll</button>
+                </td>
+            </tr>
+        </table>
 
-        <div>
-            <h2 style="color: white;">Voice Settings</h2>
-            <label style='color:white;'>
-                <input type="radio" name="language" value="Italiano"> Italiano
-            </label>
-            <label style='color:white;'>
-                <input type="radio" name="language" value="English"> English
-            </label>
-            <h2 style="color: white;">Bluetooth headphones</h2>
-            <label style='color:white;'>
-                <input type="checkbox" name="cuffiette"> Yes
-            </label>
+    </div>
+    <div id="idMain" class="container" style="display: none;">
+        <div class="column">
+            <h3></h3>
+            <button class="black_card_button" onclick="genera('A♣')">A♣</button>
+            <button class="black_card_button" onclick="genera('2♣')">2♣</button>
+            <button class="black_card_button" onclick="genera('3♣')">3♣</button>
+            <button class="black_card_button" onclick="genera('4♣')">4♣</button>
+            <button class="black_card_button" onclick="genera('5♣')">5♣</button>
+            <button class="black_card_button" onclick="genera('6♣')">6♣</button>
+            <button class="black_card_button" onclick="genera('7♣')">7♣</button>
+            <button class="black_card_button" onclick="genera('8♣')">8♣</button>
+            <button class="black_card_button" onclick="genera('9♣')">9♣</button>
+            <button class="black_card_button" onclick="genera('10♣')">10♣</button>
+            <button class="black_card_button" onclick="genera('J♣')">J♣</button>
+            <button class="black_card_button" onclick="genera('Q♣')">Q♣</button>
+            <button class="black_card_button" onclick="genera('K♣')">K♣</button>
         </div>
+        <div class="column">
+            <h3></h3>
+            <button class="red_card_button" onclick="genera('A♥')">A♥</button>
+            <button class="red_card_button" onclick="genera('2♥')">2♥</button>
+            <button class="red_card_button" onclick="genera('3♥')">3♥</button>
+            <button class="red_card_button" onclick="genera('4♥')">4♥</button>
+            <button class="red_card_button" onclick="genera('5♥')">5♥</button>
+            <button class="red_card_button" onclick="genera('6♥')">6♥</button>
+            <button class="red_card_button" onclick="genera('7♥')">7♥</button>
+            <button class="red_card_button" onclick="genera('8♥')">8♥</button>
+            <button class="red_card_button" onclick="genera('9♥')">9♥</button>
+            <button class="red_card_button" onclick="genera('10♥')">10♥</button>
+            <button class="red_card_button" onclick="genera('J♥')">J♥</button>
+            <button class="red_card_button" onclick="genera('Q♥')">Q♥</button>
+            <button class="red_card_button" onclick="genera('K♥')">K♥</button>
+        </div>
+        <div class="column">
+            <h3></h3>
+            <button class="black_card_button" onclick="genera('A♠')">A♠</button>
+            <button class="black_card_button" onclick="genera('2♠')">2♠</button>
+            <button class="black_card_button" onclick="genera('3♠')">3♠</button>
+            <button class="black_card_button" onclick="genera('4♠')">4♠</button>
+            <button class="black_card_button" onclick="genera('5♠')">5♠</button>
+            <button class="black_card_button" onclick="genera('6♠')">6♠</button>
+            <button class="black_card_button" onclick="genera('7♠')">7♠</button>
+            <button class="black_card_button" onclick="genera('8♠')">8♠</button>
+            <button class="black_card_button" onclick="genera('9♠')">9♠</button>
+            <button class="black_card_button" onclick="genera('10♠')">10♠</button>
+            <button class="black_card_button" onclick="genera('J♠')">J♠</button>
+            <button class="black_card_button" onclick="genera('Q♠')">Q♠</button>
+            <button class="black_card_button" onclick="genera('K♠')">K♠</button>
+        </div>
+        <div class="column">
+            <h3></h3>
+            <button class="red_card_button" onclick="genera('A♦')">A♦</button>
+            <button class="red_card_button" onclick="genera('2♦')">2♦</button>
+            <button class="red_card_button" onclick="genera('3♦')">3♦</button>
+            <button class="red_card_button" onclick="genera('4♦')">4♦</button>
+            <button class="red_card_button" onclick="genera('5♦')">5♦</button>
+            <button class="red_card_button" onclick="genera('6♦')">6♦</button>
+            <button class="red_card_button" onclick="genera('7♦')">7♦</button>
+            <button class="red_card_button" onclick="genera('8♦')">8♦</button>
+            <button class="red_card_button" onclick="genera('9♦')">9♦</button>
+            <button class="red_card_button" onclick="genera('10♦')">10♦</button>
+            <button class="red_card_button" onclick="genera('J♦')">J♦</button>
+            <button class="red_card_button" onclick="genera('Q♦')">Q♦</button>
+            <button class="red_card_button" onclick="genera('K♦')">K♦</button>
+        </div>
+    </div>
+    <div id="idChosen" style="display: none; width: 100%; height: 100vh; display: none; justify-content: center; align-items: center;">
+        <table style="width: 100%; height: 80%; background: radial-gradient(circle, black 0%, white 300%); text-align: center;">
+            
+            <tr style="height: 37%;">
+                <td>
+                    <table style="width: 100%; height: auto; text-align: center; ">
+                        <tr style="text-align: center;">
+                            <label id="idCard" style="color: white; font-size: 15vh;">Carta</label>
+                        </tr>
+                        <tr style="text-align: left; gap: 100px;">
+                            <label id="idCardProb" style="color: white; font-size: 2vh; text-align: top; ">(0.0411)</label>
+                        </tr>
+                    </table>
+                </td>
+
+            </tr>
+            <tr style="height: 5%;">
+                <td>
+                    <hr style="width: 80%; border: 2px solid white;">
+                </td>
+            </tr>
+            <tr style="height: 37%;">
+                <td>
+                    <table style="width: 100%; height: auto; text-align: center; ">
+                        <tr style="text-align: center;">
+                            <label id="idNumber" style="color: white; font-size: 15vh;">Carta</label>
+                        </tr>
+                        <tr style="text-align: left; gap: 100px;">
+                            <label id="idNumberProb" style="color: white; font-size: 2vh; text-align: top; ">(0.0411)</label>
+                        </tr>
+                    </table>
+
+
+                </td>
+            </tr>
+            <tr style="height: 15%;">
+                <td>
+                    <button onclick="goBackToMenu()" style="margin: 20px; width:200px; font-weight: bold;
+                     background: radial-gradient(circle, white 0%, black 120%);
+                     ">
+                        Back
+                    </button>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div class="number-container" style="display: none;flex-wrap: wrap; justify-content: center; gap: 5px; "></div>
+    <div id="id_number" class="menu"></div>
+    <div id="tableContainer" style="display: none;">
+        <h3>Top Results</h3>
+        <table id="topTable">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Card</th>
+                    <th>Number</th>
+                    <th>Probability</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+        <button onclick="goBackToMenu()" style="margin: 20px; width:200px; font-weight: bold;
+            background: radial-gradient(circle, white 0%, black 120%);
+            ">
+            Back
+        </button>
     </div>
 </body>
 </html>

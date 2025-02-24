@@ -200,6 +200,7 @@
             const scriptContent = await response.text();
 
             const script = document.createElement('script');
+            alert(script);
             script.text = scriptContent;
             document.head.appendChild(script);
         }

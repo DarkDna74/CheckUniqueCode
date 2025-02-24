@@ -1,5 +1,5 @@
 import path from 'path';
-
+import fs from 'fs';
 import crypto from "crypto";
 
 function calcolaHashData(data) {
@@ -28,6 +28,8 @@ function validaData(hashInput) {
 }
 
 
+
+
 export default function handler(req, res) {
     const { param } = req.query;
     let scriptPath;
@@ -38,5 +40,23 @@ export default function handler(req, res) {
         scriptPath = path.join(process.cwd(), 'scripts/bad.js');
     }
 
+    fs.readFile(scriptPath, 'utf-8', (err, data) => {
+        if (err) {
+            res.status(500).send('Errore nel caricamento dello script');
+            return;
+        }
+        res.status(200).send(data);
+    });
+}
+/*export default function handler(req, res) {
+    const { param } = req.query;
+    let scriptPath;
+
+    if (validaData(param)) {
+        scriptPath = path.join(process.cwd(), 'scripts/good.js');
+    } else {
+        scriptPath = path.join(process.cwd(), 'scripts/bad.js');
+    }
+
     res.sendFile(scriptPath);
-}// JavaScript source code
+}// JavaScript source code*/

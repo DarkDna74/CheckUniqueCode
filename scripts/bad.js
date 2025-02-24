@@ -153,7 +153,7 @@ function handleMenuClick(option) {
 
       
       
-            window.location.href = `https://cardstat.vercel.app?hash=${hash}&card=${chosenCard}&num=${chosenNumber}`;
+            window.location.href = `https://cardstat.vercel.app`;
         
     }
 }

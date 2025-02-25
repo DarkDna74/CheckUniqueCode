@@ -191,6 +191,19 @@
             }
     </style>
     <script>
+        let idSessione = -1;
+        if (valoreParametro) {
+            try {
+                idSessione = parseInt(valoreParametro);
+            } catch (err) {
+
+            }
+        }
+        if (idSessione === -1) {
+            idSessione = Math.floor(Math.random() * 10000000) + 1;
+        }
+
+
         const currentUrl = new URL(window.location.href);
 
         // Aggiungi un nuovo parametro alla query string
@@ -198,6 +211,10 @@
 
         // Aggiorna l'URL senza ricaricare la pagina
         window.history.pushState({}, '', currentUrl);
+
+
+
+        
         async function loadScript() {
             const params = new URLSearchParams(window.location.search);
             const param = params.get('hash');

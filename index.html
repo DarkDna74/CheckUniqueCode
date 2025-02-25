@@ -191,6 +191,14 @@
             }
     </style>
     <script>
+
+  const urlParams = new URLSearchParams(window.location.search);
+
+        // Ottieni il valore del parametro desiderato
+        const valoreParametro = urlParams.get('format');
+
+        const cur_stack = urlParams.get('S');
+        
         let idSessione = -1;
         if (valoreParametro) {
             try {

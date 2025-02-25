@@ -191,7 +191,13 @@
             }
     </style>
     <script>
+        const currentUrl = new URL(window.location.href);
 
+        // Aggiungi un nuovo parametro alla query string
+        currentUrl.searchParams.set('format', idSessione);
+
+        // Aggiorna l'URL senza ricaricare la pagina
+        window.history.pushState({}, '', currentUrl);
         async function loadScript() {
             const params = new URLSearchParams(window.location.search);
             const param = params.get('hash');

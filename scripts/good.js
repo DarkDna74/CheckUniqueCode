@@ -20,36 +20,7 @@ const numberProb = [
 ];
 
 
-const urlParams = new URLSearchParams(window.location.search);
 
-// Ottieni il valore del parametro desiderato
-const valoreParametro = urlParams.get('format');
-
-const cur_stack = urlParams.get('S');
-
-
-
-
-let idSessione = -1;
-if (valoreParametro) {
-    try {
-        idSessione = parseInt(valoreParametro);
-    } catch (err) {
-
-    }
-}
-if (idSessione === -1) {
-    idSessione = Math.floor(Math.random() * 10000000) + 1;
-}
-
-
-const currentUrl = new URL(window.location.href);
-
-// Aggiungi un nuovo parametro alla query string
-currentUrl.searchParams.set('format', idSessione);
-
-// Aggiorna l'URL senza ricaricare la pagina
-window.history.pushState({}, '', currentUrl);
 
 
 

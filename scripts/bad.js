@@ -20,20 +20,6 @@ const numberProb = [
 ];
 
 
-const urlParams = new URLSearchParams(window.location.search);
-
-// Ottieni il valore del parametro desiderato
-const valoreParametro = urlParams.get('format');
-
-const cur_stack = urlParams.get('S');
-
-
-
-
-
-// Aggiorna l'URL senza ricaricare la pagina
-window.history.pushState({}, '', currentUrl);
-
 
 
 let chosenCard = "";
